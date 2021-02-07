@@ -133,7 +133,10 @@ pub trait Metadata: Send + Sized + 'static {
     fn request_url(id: SpotifyId) -> String;
     fn parse(msg: &Self::Message, session: &Session) -> Self;
 
-    fn get(session: &Session, id: SpotifyId) -> Box<dyn Future<Item = Self, Error = MercuryError>> {
+    fn get(
+        session: &Session,
+        id: SpotifyId,
+    ) -> Box<dyn Future<Item = Self, Error = MercuryError> + Send> {
         let uri = Self::request_url(id);
         let request = session.mercury().get(uri);
 
